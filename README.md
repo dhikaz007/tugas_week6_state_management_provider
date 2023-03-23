@@ -2,15 +2,8 @@
 
 Alterra Flexi Program - Flutter Week 6 State Management (Provider)
 
-## Getting Started
+This project is made to fullfill Alterra Flexi Program Task
 
-This project is a starting point for a Flutter application.
+## Ouput Video
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+https://user-images.githubusercontent.com/37215014/227213975-87f88aa3-ba82-487e-9621-726b6b393e8d.mp4
