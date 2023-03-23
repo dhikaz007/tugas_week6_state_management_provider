@@ -1,87 +1,43 @@
 import 'package:flutter/material.dart';
-import '../../../data/model/contact_data.dart';
+import 'package:provider/provider.dart';
+
+import '../../provider/contact.dart';
 import '../../widget/page_route_builder_widget.dart';
 import 'add_contact_page.dart';
 
-class ContactListPage extends StatefulWidget {
+class ContactListPage extends StatelessWidget {
   const ContactListPage({super.key});
 
   @override
-  State<ContactListPage> createState() => _ContactListPageState();
-}
-
-class _ContactListPageState extends State<ContactListPage> {
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Contact List',
-        ),
-        actions: [
-          // Tombol untuk menambah isi pada kontak
-          TextButton(
-            onPressed: () => _addNewContact(context),
+      appBar: AppBar(title: const Text('Contact List'), actions: [
+        // Tombol untuk menambah isi pada kontak
+        TextButton(
+            onPressed: () => Navigator.of(context).push(PageRouteBuilderPage(
+                page: const AddContactPage(), routeName: 'Add new contact')),
             style: TextButton.styleFrom(
-              foregroundColor: Theme.of(context).colorScheme.onPrimary,
-            ),
-            child: const Icon(
-              Icons.add_rounded,
-            ),
-          )
-        ],
-      ),
-      // Animasi ketika menambah dan mengurangi kontak list
-      body: AnimatedList(
-        padding: EdgeInsets.zero,
-        key: _listKey,
-        initialItemCount: cList.length,
-        itemBuilder: (context, index, animation) => _listContacts(
-            cItem: cList[index],
-            animation: animation,
-            onPressed: () => _removeContact(index)),
-      ),
-    );
-  }
-
-  Widget _listContacts(
-      {required ContactData cItem,
-      required Animation<double> animation,
-      VoidCallback? onPressed}) {
-    /// List kontak yang ditampilkan menggunakan widget ListTile
-    return SlideTransition(
-      key: ValueKey(cItem),
-      position: Tween<Offset>(begin: const Offset(-1, 0), end: Offset.zero)
-          .animate(CurvedAnimation(parent: animation, curve: Curves.ease)),
-      child: ListTile(
-        leading: CircleAvatar(child: Text(cItem.name[0])),
-        title: Text('${cItem.name} ${cItem.lastName}'),
-        subtitle: Text(cItem.numberPhone),
-        trailing:
-            IconButton(icon: const Icon(Icons.delete), onPressed: onPressed),
-        shape: const UnderlineInputBorder(),
+                foregroundColor: Theme.of(context).colorScheme.onPrimary),
+            child: const Icon(Icons.add_rounded)),
+      ]),
+      // List kontak yang dibungkus widget Consumner agar dapat memanggil fungsi remove dari provider Contact
+      body: Consumer<Contact>(
+        builder: (context, value, child) => ListView.builder(
+          physics: const BouncingScrollPhysics(),
+          itemCount: value.listContact.length,
+          itemBuilder: (context, index) => ListTile(
+            leading: CircleAvatar(
+                child: Text(value.listContact[index].firstName[0])),
+            title: Text(
+                '${value.listContact[index].firstName} ${value.listContact[index].lastName}'),
+            subtitle: Text(value.listContact[index].phoneNumber),
+            trailing: IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () => value.remove(value.listContact[index])),
+            shape: const UnderlineInputBorder(),
+          ),
+        ),
       ),
     );
-  }
-
-  _addNewContact(BuildContext context) {
-    final route = PageRouteBuilderPage(
-        page: AddContactPage(addList: cList, listKey: _listKey),
-        routeName: 'Add new contact');
-    Navigator.push(context, route).then((value) => cList = value);
-  }
-
-  _removeContact(int index) {
-    final removeItem = cList[index];
-    cList.removeAt(index);
-    _listKey.currentState?.removeItem(
-        index,
-        (context, animation) => _listContacts(
-              cItem: removeItem,
-              animation: animation,
-              onPressed: () {},
-            ),
-        duration: const Duration(seconds: 2));
   }
 }

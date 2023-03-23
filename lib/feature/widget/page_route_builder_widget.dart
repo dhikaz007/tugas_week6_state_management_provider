@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 Route PageRouteBuilderPage<T>(
     {required Widget page, required String routeName}) {
   return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => page,
-      transitionDuration: const Duration(seconds: 2),
-      reverseTransitionDuration: const Duration(seconds: 1),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        animation = CurvedAnimation(curve: Curves.bounceOut, parent: animation);
+    pageBuilder: (context, animation, secondaryAnimation) => page,
+    transitionDuration: const Duration(seconds: 2),
+    reverseTransitionDuration: const Duration(seconds: 1),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      animation = CurvedAnimation(curve: Curves.bounceOut, parent: animation);
 
-        return ScaleTransition(
-            scale: animation, alignment: Alignment.center, child: child);
-      });
+      return ScaleTransition(
+          scale: animation, alignment: Alignment.center, child: child);
+    },
+  );
 }

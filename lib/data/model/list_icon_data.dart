@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../feature/ui/contact/contact_list_page.dart';
 import '../../feature/ui/splash/splash_page.dart';
+import '../../feature/widget/page_route_builder_widget.dart';
 
 class ListIcon {
   // Inisialisasi parameter untuk icon
@@ -27,16 +28,17 @@ const List<ListIcon> iconsList = [
   ListIcon(namaIcon: 'Kamera', icon: Icons.camera),
 ];
 
+// Navigasi menu bar
 menuNavigate(BuildContext context, int index) {
   if (iconsList[index].widget == null) {
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const SplashPage()));
+    Navigator.of(context).pushReplacement(PageRouteBuilderPage(
+        page: const SplashPage(), routeName: 'Splash Page'));
   } else {
     goTo(context, iconsList[index].widget ?? const SplashPage());
   }
 }
 
 goTo(BuildContext context, Widget widget) {
-  final route = MaterialPageRoute(builder: (context) => widget);
+  final route = PageRouteBuilderPage(page: widget, routeName: '');
   Navigator.of(context).push(route);
 }
